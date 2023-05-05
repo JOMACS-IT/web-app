@@ -1,0 +1,49 @@
+//Scripted Groovy
+node(""){
+    def MHD = tool name: "maven3.8.8"
+    
+    stage("1. Git clone the repository"){
+        sh "echo start cloning git repo"
+        git branch: 'main', url: 'https://github.com/ForkahEH/web-app.git'
+        sh "echo end of cloning"
+    }
+    stage ("2.Build from Maven"){
+        sh "echo building from Maven"
+        sh "${MHD}/bin/mvn clean package"
+        sh "echo end of build"
+    }
+    
+    stage("3. Scan build"){
+        sh "echo scanning artifacts in sonarqube"
+        sh "${MHD}/bin/mvn sonar:sonar"
+        sh "echo end of scan"
+    }
+    
+    stage("4. Slack notification to Developrs"){
+        sh "echo sending slack notification to Developers"
+        slackSend channel: 'D04M3K8QSLU', message: 'Successful scan of built artifacts'
+    }
+    
+    stage("5. Store artifact in Nexus"){
+        sh "echo storing artifact in Nexus repo"
+        sh "${MHD}/bin/mvn deploy"
+        sh "echo artifact stored"
+    }
+    stage("6. Deploy artifact to Tomcat UAT"){
+        sh "echo deploying artifact to Tomcat UAT"
+        deploy adapters: [tomcat9(credentialsId: '35b1a901-fbac-433c-b10d-a0c65574ff7d', path: '', url: 'http://3.83.212.28:9090/')], contextPath: null, war: 'target/*.war'
+        sh "echo artifact deployed to Tomcat UAT"
+    }
+    stage("7. Approval by PM"){
+        sh "echo Approval by PM required"
+        timeout(time: 2, unit: 'DAYS') {
+            input message: "Approval required by PM to proceed to prod env"
+        }
+    }
+    stage("7. Email notification to PM"){
+        sh "echo sending email notification to PM"
+        emailext body: 'Successful Deployment to Tomcat UAT', subject: 'Successful Deployment', to: 'elmaforkah@gmail.com'
+        sh "echo email sent to PM"
+    }    
+    
+}
