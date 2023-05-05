@@ -45,7 +45,7 @@ node(""){
         sh "echo sending email notification to PM"
         emailext body: 'Successful Deployment to Tomcat UAT', subject: 'Successful Deployment', to: 'elmaforkah@gmail.com'
         sh "echo email sent to PM"
-     */
     }    
-    
+    */
 }
+
