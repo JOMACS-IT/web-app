@@ -34,7 +34,7 @@ node(""){
         deploy adapters: [tomcat9(credentialsId: '35b1a901-fbac-433c-b10d-a0c65574ff7d', path: '', url: 'http://52.70.178.148:9090/')], contextPath: null, war: 'target/*.war'
         sh "echo artifact deployed to Tomcat UAT"
     }
-  /*
+    /*
     stage("7. Approval by PM"){
         sh "echo Approval by PM required"
         timeout(time: 2, unit: 'DAYS') {
