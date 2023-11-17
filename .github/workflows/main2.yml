@@ -5,6 +5,7 @@ jobs:
   zap_scan:
     runs-on: ubuntu-latest
     name: Scan 4th-IR website
+    permissions: write-all
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.8.0
