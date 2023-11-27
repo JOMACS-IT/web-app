@@ -4,7 +4,7 @@ on: [push]
 jobs:
   zap_scan:
     runs-on: ubuntu-latest
-    name: Scan 4th-IR website
+    name: Scan OWASP Juice Shop
     permissions: write-all
     steps:
       - name: ZAP Scan
