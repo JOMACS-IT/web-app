@@ -10,4 +10,4 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-full-scan@v0.8.0
         with:
-          target: 'https://www.4th-ir.com/'
+          target: 'https://demo.owasp-juice.shop/'
